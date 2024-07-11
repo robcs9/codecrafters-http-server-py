@@ -12,7 +12,7 @@ def main():
     
     # Extract URL path then respond accordingly
     url_path = connection.recv(1024).split()[1]
-    if url_path is "/":
+    if url_path == "/":
         # make the server respond back with HTTP/1.1 200 OK\r\n\r\n
         connection.sendall(b'HTTP/1.1 200 OK\r\n\r\n') # it sends back data in binary format as well
     else:
