@@ -13,14 +13,20 @@ def main():
     # Read data from a connection
     data = connection.recv(1024)
 
-    # Extract URL path then respond accordingly
-    url_path = data.decode("utf-8").split()[1]
-    
-    if url_path == "/":
-        # make the server respond back with HTTP/1.1 200 OK\r\n\r\n
-        connection.sendall(b'HTTP/1.1 200 OK\r\n\r\n') # it sends back data in binary format as well
-    else:
-        connection.sendall(b'HTTP/1.1 404 Not Found\r\n\r\n')
+    # Extract URL path and handle it
+    data_str = str(data)
+    lines = data_str.split()[1] 
+    path = lines.split('/')
+    target_path = path[2]
 
+    # Assign content length for the response
+    path_size = len(target_path)
+    
+    # Send back appropriate response
+    response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {path_size}\r\n\r\n{target_path}'
+    connection.send(str.encode(response))
+    connection.close()
+    
+ 
 if __name__ == "__main__":
     main()
