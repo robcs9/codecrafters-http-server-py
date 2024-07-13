@@ -24,7 +24,7 @@ def main():
     
     # Send back appropriate response
     response = f'HTTP/1.1 404 Not Found\r\n\r\n'
-    if path[-1] == "echo":
+    if path[-1] == "echo" or path[-1] == "":
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {path_size}\r\n\r\n{target_path}'
 
     connection.send(str.encode(response))
