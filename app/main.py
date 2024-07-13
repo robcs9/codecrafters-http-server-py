@@ -18,15 +18,15 @@ def main():
     lines = data_str.split()[1] 
     path = lines.split('/')
     target_path = path.pop()
-    #print(target_path)
-    #if len(path) < 3:
-    #    target_path = path[2] # bug found here: probably can't pass because you're not considering test cases such as "/echo/", "/echo", etc.
-
+    
     # Assign content length for the response
     path_size = len(target_path)
     
     # Send back appropriate response
-    response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {path_size}\r\n\r\n{target_path}'
+    response = f'HTTP/1.1 404 Not Found\r\n\r\n'
+    if path[-1] != "":
+        response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {path_size}\r\n\r\n{target_path}'
+
     connection.send(str.encode(response))
     connection.close()
     
