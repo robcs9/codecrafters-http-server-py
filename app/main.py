@@ -25,7 +25,7 @@ def main():
     # Send back appropriate response
     response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {path_size}\r\n\r\n{target_path}'
     connection.send(str.encode(response))
-    connection.close()
+    #connection.close()
     
  
 if __name__ == "__main__":
