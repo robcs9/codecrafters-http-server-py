@@ -15,21 +15,28 @@ def main():
 
     # Extract URL path and handle it
     data_str = str(data)
-    lines = data_str.split()[1] 
-    path = lines.split('/')
-    target_path = path[-1]
+    req_fields = data_str.split()
+    endpoint = data_str.split()[1]
+    user_agent = req_fields[4]
+    path = endpoint.split('/')
+    status_line = 'HTTP/1.1 404 Not Found'
+    headers = '\r\n'
+    body = '\r\n\r\n'
     
     # Assign content length for the response
-    path_size = len(target_path)
+    #path_size = len(body)
     
     # Send back appropriate response
     # ['', 'echo', 'x'] => 202 'x', ['', ''] => 202, ['', 'y'] => 404
     response = f'HTTP/1.1 404 Not Found\r\n\r\n'
     if len(path) > 1 and path[1] == 'echo':
-        response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {path_size}\r\n\r\n{target_path}'
+        body = path[-1]
+        response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
+    if len(path) > 1 and path[1] == 'user-agent':
+        body = user_agent
+        response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
     if len(path) == 2 and path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
-    
 
     connection.send(str.encode(response))
     connection.close()
