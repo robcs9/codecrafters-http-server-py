@@ -33,8 +33,7 @@ def main():
         body = path[-1]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
     if len(path) > 1 and path[1] == 'user-agent':
-        body = user_agent
-        print(body)
+        body = user_agent.split()[0]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
     if len(path) == 2 and path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
