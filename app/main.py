@@ -17,7 +17,7 @@ def main():
     data_str = str(data)
     req_fields = data_str.split()
     endpoint = data_str.split()[1]
-    user_agent = req_fields[4]
+    user_agent = req_fields[5]
     path = endpoint.split('/')
     status_line = 'HTTP/1.1 404 Not Found'
     headers = '\r\n'
@@ -33,6 +33,7 @@ def main():
         body = path[-1]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
     elif len(path) > 1 and path[1] == 'user-agent':
+        print(user_agent)
         body = user_agent.split()[0]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
     elif len(path) == 2 and path[1] == '':
