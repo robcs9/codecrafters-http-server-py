@@ -17,7 +17,10 @@ def main():
     data_str = str(data)
     req_fields = data_str.split()
     endpoint = data_str.split()[1]
-    user_agent = req_fields[5].split('\\') #??? user-agent extraction requires better target logic
+
+    print(f'req_fields = {req_fields}')
+    
+    user_agent = req_fields[-1].split('\\') #??? user-agent extraction requires better target logic
     path = endpoint.split('/')
     status_line = 'HTTP/1.1 404 Not Found'
     headers = '\r\n'
