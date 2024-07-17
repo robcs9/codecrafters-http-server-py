@@ -7,7 +7,7 @@ import threading
 # Concurrent connections stage
 def handle_client(client_socket):
     data = client_socket.recv(1024)
-    client_socket.send(b'HTTP/1.1 200 OK\r\n\r\n')
+    client_socket.send(b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\n\r\n')
     client_socket.close()
     print('Server has been shutdown')
 
