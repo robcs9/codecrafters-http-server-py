@@ -6,8 +6,10 @@ import threading
 
 # Concurrent connections stage
 def handle_client(client_socket):
+    data = client_socket.recv(1024)
     client_socket.send(b'HTTP/1.1 200 OK\r\n\r\n')
     client_socket.close()
+    print('Server has been shutdown')
 
 def concurrent_connections():
     HOST = 'localhost'
@@ -16,12 +18,18 @@ def concurrent_connections():
     server_socket.listen()
     print(f'Server is listening on port {PORT}')
     
-    while True:
-        conn, addr = server_socket.accept()
-        print(f'Connection from {addr} has been established!')
-        client_handler = threading.Thread(target=handle_client, args=(conn,))
-        client_handler.start()
-        print('Server loop running in thread: ', client_handler.name)
+    try:
+        while True:
+            conn, addr = server_socket.accept()
+            print(f'Connection from {addr} has been established!')
+            client_handler = threading.Thread(target=handle_client, args=(conn,))
+            client_handler.start()
+            #print('Server loop running in thread: ', client_handler.name)
+    except KeyboardInterrupt:
+        print('Server is shutting down')
+    finally:
+        server_socket.close()
+        print('Server has been shutdown')
 
     
 
