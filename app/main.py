@@ -41,7 +41,7 @@ def handle_response(connection):
 
 # Concurrent connections stage
 def handle_client(client_socket):
-    data = client_socket.recv(1024)
+    #data = client_socket.recv(1024)
     #client_socket.send(b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 0\r\n\r\n')
     handle_response(client_socket)
     client_socket.close()
