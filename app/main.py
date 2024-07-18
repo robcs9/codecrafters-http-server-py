@@ -37,14 +37,13 @@ def handle_response(connection):
     
     elif len(url_path) > 1 and url_path[1] == 'files':
         filename = url_path[-1]
-        
+        body = data_str.split('\r\n')
         if req_type == "POST":
-            file_text = req_fields[-1]
-            print(f'{data_str.split('\r\n')}')
+            #print(f'{data_str.split('\r\n')}')
             #print(os.path.dirname())
             with open(f'{args.directory}/{filename}', 'w') as f:
                 #print('im here')
-                f.write(file_text)
+                f.write(body)
                 #print(f.read())
                 response = f'HTTP/1.1 201 Created\r\n\r\n'
 
