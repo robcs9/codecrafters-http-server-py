@@ -37,7 +37,7 @@ def handle_response(connection):
     
     elif len(url_path) > 1 and url_path[1] == 'files':
         filename = url_path[-1]
-        body = data_str.split('\r\n')
+        body = data_str.split('\r\n')[-1]
         if req_type == "POST":
             #print(f'{data_str.split('\r\n')}')
             #print(os.path.dirname())
