@@ -1,7 +1,7 @@
 # Uncomment this to pass the first stage
 import socket
 import threading
-import os
+import argparse
     
 def handle_response(connection):    
     # Uncomment this to pass the first stage
@@ -16,15 +16,6 @@ def handle_response(connection):
     endpoint = data_str.split()[1]
     user_agent = req_fields[-1].split('\\') # user-agent extraction requires better target logic
     path = endpoint.split('/')
-    #status_line = 'HTTP/1.1 404 Not Found'
-    #headers = '\r\n'
-    #body = '\r\n\r\n'
-
-    # Assign content length for the response
-    #path_size = len(body)
-
-    # Send back appropriate response
-    # ['', 'echo', 'x'] => 202 'x', ['', ''] => 202, ['', 'y'] => 404
     response = f'HTTP/1.1 404 Not Found\r\n\r\n'
     if len(path) > 1 and path[1] == 'echo':
         body = path[-1]
@@ -34,30 +25,26 @@ def handle_response(connection):
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
     elif len(path) > 1 and path[1] == 'files':
         filename = path[-1]
-        #print(os.path.isfile(filename))
-        #if os.path.isfile(filename):
+        
+        # directory argument processing
+        parser = argparse.ArgumentParser(description="Process directory argument")
+        parser.add_argument('--directory')
+        args = parser.parse_args()
+        
         try:
-            f = open(filename, 'r')
+            f = open(f'{args.directory}/{filename}', 'r')
             read_data = f.read()
             f.close()
             response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
         except Exception:
             print("File not found")
-            #response = f'HTTP/1.1 404 Not Found\r\n\r\n'
-        #with open(filename, 'r') as f:
-        #    read_data = f.read()
-        #    response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
     elif len(path) == 2 and path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
 
-    #print(body)
     connection.send(str.encode(response))
-    #connection.close()
 
 # Concurrent connections stage
 def handle_client(client_socket):
-    #data = client_socket.recv(1024)
-    #client_socket.send(b'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: 0\r\n\r\n')
     handle_response(client_socket)
     client_socket.close()
     print('Server has been shutdown')
@@ -91,6 +78,5 @@ def main():
     # Concurrent connections
     concurrent_connections()
     
- 
 if __name__ == "__main__":
     main()
