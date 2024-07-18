@@ -32,6 +32,13 @@ def handle_response(connection):
     elif len(path) > 1 and path[1] == 'user-agent':
         body = user_agent[0]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
+    elif len(path) > 1 and path[1] == 'files':
+        filename = path[-1]
+        with open(filename) as f:
+            read_data = f.read()
+            #print(read_data)
+            response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
+        f.close()
     elif len(path) == 2 and path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
 
