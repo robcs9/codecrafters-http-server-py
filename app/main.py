@@ -40,7 +40,7 @@ def handle_response(connection):
         
         if req_type == "POST":
             file_text = req_fields[-1]
-            print(f'{data_str}')
+            print(f'{data_str.split('\r\n')}')
             #print(os.path.dirname())
             with open(f'{args.directory}/{filename}', 'w') as f:
                 #print('im here')
