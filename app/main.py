@@ -34,6 +34,7 @@ def handle_response(connection):
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
     elif len(path) > 1 and path[1] == 'files':
         filename = path[-1]
+        print(os_path.isfile(filename))
         if os_path.isfile(filename):
             with open(filename, 'r') as f:
                 read_data = f.read()
