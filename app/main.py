@@ -41,9 +41,9 @@ def handle_response(connection):
         if req_type == "POST":
             file_text = req_fields[-1]
             #print(os.path.dirname())
-            with open(f'{args.directory}', 'wb') as f:
-                print('im here')
-                #f.write(file_text)
+            with open(f'{args.directory}/{filename}', 'w') as f:
+                #print('im here')
+                f.write(file_text)
                 #print(f.read())
                 response = f'HTTP/1.1 201 Created\r\n\r\n'
 
