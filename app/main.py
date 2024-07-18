@@ -2,7 +2,8 @@
 import socket
 import threading
 import argparse
-    
+import os
+
 def handle_response(connection):    
     # Uncomment this to pass the first stage
     #server_socket = socket.create_server(("localhost", 4221)) #, reuse_port=True)
@@ -11,34 +12,58 @@ def handle_response(connection):
     # Read data from a connection
     data = connection.recv(1024)
     # Extract URL path and handle it
-    data_str = str(data)
+    data_str = bytes.decode(data, "utf-8") #str(data)
     req_fields = data_str.split()
     endpoint = data_str.split()[1]
     user_agent = req_fields[-1].split('\\') # user-agent extraction requires better target logic
-    path = endpoint.split('/')
+    url_path = endpoint.split('/')
+    req_type = req_fields[0]
+
+    # Directory argument processing
+    parser = argparse.ArgumentParser(description="Process directory argument")
+    parser.add_argument('--directory')
+    args = parser.parse_args()
+    
+    # Default response
     response = f'HTTP/1.1 404 Not Found\r\n\r\n'
-    if len(path) > 1 and path[1] == 'echo':
-        body = path[-1]
+
+    if len(url_path) > 1 and url_path[1] == 'echo':
+        body = url_path[-1]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
-    elif len(path) > 1 and path[1] == 'user-agent':
+    
+    elif len(url_path) > 1 and url_path[1] == 'user-agent':
         body = user_agent[0]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
-    elif len(path) > 1 and path[1] == 'files':
-        filename = path[-1]
+    
+    elif len(url_path) > 1 and url_path[1] == 'files':
+        filename = url_path[-1]
         
-        # directory argument processing
-        parser = argparse.ArgumentParser(description="Process directory argument")
-        parser.add_argument('--directory')
-        args = parser.parse_args()
-        
-        try:
-            f = open(f'{args.directory}/{filename}', 'r')
-            read_data = f.read()
-            f.close()
-            response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
-        except Exception:
-            print("File not found")
-    elif len(path) == 2 and path[1] == '':
+        if req_type == "POST":
+            file_text = req_fields[-1]
+            #print(os.path.dirname())
+            with open(f'/{args.directory}', 'wb') as f:
+                print('im here')
+                #f.write(file_text)
+                #print(f.read())
+                response = f'HTTP/1.1 201 Created\r\n\r\n'
+
+            #try:
+            #    with open(args.directory, 'x') as f:
+            #        f.write(file_text)
+            #        print(f.read())
+            #    response = f'HTTP/1.1 201 Created\r\n\r\n'
+            #except Exception:
+            #    print("Failed to create new file")
+        else:
+            try:
+                f = open(f'{args.directory}/{filename}', 'r')
+                read_data = f.read()
+                f.close()
+                response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
+            except Exception:
+                print("File not found")
+    
+    elif len(url_path) == 2 and url_path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
 
     connection.send(str.encode(response))
