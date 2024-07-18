@@ -1,7 +1,7 @@
 # Uncomment this to pass the first stage
 import socket
 import threading
-from os import path as os_path
+import os
     
 def handle_response(connection):    
     # Uncomment this to pass the first stage
@@ -34,14 +34,19 @@ def handle_response(connection):
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
     elif len(path) > 1 and path[1] == 'files':
         filename = path[-1]
-        print(os_path.isfile(filename))
-        if os_path.isfile(filename):
-            with open(filename, 'r') as f:
-                read_data = f.read()
-                print(read_data)
-                response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
-        #else:
-        #    response = f'HTTP/1.1 404 Not Found\r\n\r\n'
+        print(os.path.isfile(filename))
+        #if os.path.isfile(filename):
+        try:
+            f = open(filename, 'r')
+            read_data = f.read()
+            f.close()
+            response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
+        except Exception:
+            print("File not found")
+            response = f'HTTP/1.1 404 Not Found\r\n\r\n'
+        #with open(filename, 'r') as f:
+        #    read_data = f.read()
+        #    response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
     elif len(path) == 2 and path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
 
