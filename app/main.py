@@ -24,8 +24,18 @@ def handle_response(connection):
     parser.add_argument('--directory')
     args = parser.parse_args()
     
-    # Default response
-    response = f'HTTP/1.1 404 Not Found\r\n\r\n'
+    rqfields = data_str.split('\r\n')
+    method_line = rqfields[0]
+    http_method = method_line.split()[0]
+    url = rqfields[0].split()[1]
+    host = rqfields[1].split()[1]
+    usr_agent = rqfields[2].split()[1]
+    accepted_content = rqfields[3].split()[1]
+    accepted_encoding = rqfields[4].split()[1]
+
+    # Respond to request
+    print()
+    response = f'HTTP/1.1 404 Not Found\r\n\r\n' # Default response
 
     if len(url_path) > 1 and url_path[1] == 'echo':
         body = url_path[-1]
