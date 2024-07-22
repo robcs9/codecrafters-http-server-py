@@ -29,12 +29,12 @@ def handle_response(connection):
     http_method = method_line.split()[0]
     url = rqfields[0].split()[1]
     host = rqfields[1].split()[1]
+    # must confirm if the fields belows exist before assigning them to the variables below
     usr_agent = rqfields[2].split()[1]
     accepted_content = rqfields[3].split()[1]
     accepted_encoding = rqfields[4].split()[1]
 
     # Respond to request
-    print()
     response = f'HTTP/1.1 404 Not Found\r\n\r\n' # Default response
 
     if len(url_path) > 1 and url_path[1] == 'echo':
@@ -71,10 +71,15 @@ def handle_response(connection):
                 f.close()
                 response = f'HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: {len(read_data)}\r\n\r\n{read_data}'
             except Exception:
-                print("File not found")
+                print('File not found')
     
     elif len(url_path) == 2 and url_path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
+    
+    # Append the content-encoding header, for gzip only, to the response string
+    # Remember to check if accept-encoding exists when processing the request
+    header_beginning = response.find('\n') + 1
+    response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
 
     connection.send(str.encode(response))
 
