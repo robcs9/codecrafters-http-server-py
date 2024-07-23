@@ -76,19 +76,15 @@ def handle_response(connection):
         response = f'HTTP/1.1 200 OK\r\n\r\n'
     
     for itr in rqfields:
-        if itr.find('Accept-Encoding:') and 'gzip' or 'gzip,' in itr.split(' '):
+        if itr.find('Accept-Encoding:') != -1 and ('gzip' or 'gzip,') in itr.split(' '):
             header_beginning = response.find('\n') + 1
             response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
             break
 
-    #if 'Accept-Encoding: gzip' in rqfields:
-    #    header_beginning = response.find('\n') + 1
-    #    response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
-
     # Debugging
     #print(f'Raw data:\n{data_str}\n\n')
     #print(f'req_fields:\n{req_fields}\n\n')
-    print(f'rqfields:\n{rqfields}\n\n')
+    #print(f'rqfields:\n{rqfields}\n\n')
     #print(f'accept_enconding:\n{accept_encoding_header}\n\n')
     #print(f'accept_enconding length (should be > 1):\n{len(accept_encoding_header)}\n\n')
     #print(f'accept_enconding header (should be == \'gzip\'):\n{accept_encoding_header}\n\n')
