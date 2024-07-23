@@ -75,9 +75,12 @@ def handle_response(connection):
     elif len(url_path) == 2 and url_path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
     
-    header_beginning = response.find('\n') + 1
     if len(accept_encoding_header) > 1 and accept_encoding_header[1] == 'gzip':
+        header_beginning = response.find('\n') + 1
         response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
+
+    # Debugging
+    print(f'Raw data:\n\n{data_str}\n\n')
 
     connection.send(str.encode(response))
 
