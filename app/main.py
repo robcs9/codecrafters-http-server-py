@@ -76,6 +76,8 @@ def handle_response(connection):
         response = f'HTTP/1.1 200 OK\r\n\r\n'
     
     header_beginning = response.find('\n') + 1
+    print(f'header beginning: {header_beginning}')
+    
     if len(accept_encoding_header) > 1 and accept_encoding_header[1] == 'gzip':
         response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
 
