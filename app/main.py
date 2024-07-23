@@ -75,17 +75,20 @@ def handle_response(connection):
     elif len(url_path) == 2 and url_path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
     
-    if len(accept_encoding_header) > 1 and accept_encoding_header[1] == 'gzip':
+    if 'Accept-Encoding: gzip' in rqfields:
         header_beginning = response.find('\n') + 1
         response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
+    #if len(accept_encoding_header) > 1 and accept_encoding_header[1] == 'gzip':
+    #    header_beginning = response.find('\n') + 1
+    #    response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
 
     # Debugging
-    print(f'Raw data:\n\n{data_str}\n\n')
-    print(f'req_fields:\n\n{req_fields}\n\n')
-    print(f'rqfields:\n\n{rqfields}\n\n')
-    print(f'accept_enconding:\n\n{accept_encoding_header}\n\n')
-    print(f'accept_enconding length (should be > 1):\n\n{len(accept_encoding_header)}\n\n')
-    print(f'accept_enconding header (should be == \'gzip\'):\n\n{accept_encoding_header}\n\n')
+    #print(f'Raw data:\n\n{data_str}\n\n')
+    #print(f'req_fields:\n\n{req_fields}\n\n')
+    #print(f'rqfields:\n\n{rqfields}\n\n')
+    #print(f'accept_enconding:\n\n{accept_encoding_header}\n\n')
+    #print(f'accept_enconding length (should be > 1):\n\n{len(accept_encoding_header)}\n\n')
+    #print(f'accept_enconding header (should be == \'gzip\'):\n\n{accept_encoding_header}\n\n')
 
     connection.send(str.encode(response))
 
