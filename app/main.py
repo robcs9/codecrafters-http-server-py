@@ -80,7 +80,7 @@ def handle_response(connection):
         response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
 
     # Debugging
-    print(f'Raw data:\n\n{data_str}\n\n')
+    print(f'Raw data:\n\n{rqfields}\n\n')
 
     connection.send(str.encode(response))
 
