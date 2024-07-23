@@ -75,10 +75,9 @@ def handle_response(connection):
     elif len(url_path) == 2 and url_path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
     
-    # Append the content-encoding header, for gzip only, to the response string
-    # Remember to check if the Accept-Encoding header exists when processing the request
     header_beginning = response.find('\n') + 1
-    if len(accept_encoding_header) > 1 and accept_encoding_header[1] == 'gzip':
+    #if len(accept_encoding_header) > 1 and accept_encoding_header[1] == 'gzip':
+    if accept_encoding_header[1] == 'gzip':
         response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
 
     connection.send(str.encode(response))
