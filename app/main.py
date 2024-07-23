@@ -29,10 +29,9 @@ def handle_response(connection):
     http_method = method_line.split()[0]
     url = rqfields[0].split()[1]
     host = rqfields[1].split()[1]
-    # must confirm if the fields belows exist before assigning them to the variables below
-    usr_agent = rqfields[2].split()[1]
-    accepted_content = rqfields[3].split()[1]
-    accepted_encoding = rqfields[4].split()[1]
+    usr_agent_header = rqfields[2].split()
+    accept_content_header = rqfields[3].split()
+    accept_encoding_header = rqfields[4].split()
 
     # Respond to request
     response = f'HTTP/1.1 404 Not Found\r\n\r\n' # Default response
@@ -77,9 +76,10 @@ def handle_response(connection):
         response = f'HTTP/1.1 200 OK\r\n\r\n'
     
     # Append the content-encoding header, for gzip only, to the response string
-    # Remember to check if accept-encoding exists when processing the request
+    # Remember to check if the Accept-Encoding header exists when processing the request
     header_beginning = response.find('\n') + 1
-    response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
+    if len(accept_encoding_header) > 1 and accept_encoding_header[1] == 'gzip':
+        response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
 
     connection.send(str.encode(response))
 
