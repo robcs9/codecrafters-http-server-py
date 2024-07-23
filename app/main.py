@@ -75,11 +75,17 @@ def handle_response(connection):
     elif len(url_path) == 2 and url_path[1] == '':
         response = f'HTTP/1.1 200 OK\r\n\r\n'
     
+    encodings_list = []
     for itr in rqfields:
-        if itr.find('Accept-Encoding:') != -1 and ('gzip' or 'gzip,') in itr.split(' '):
-            header_beginning = response.find('\n') + 1
-            response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
+        if itr.find('Accept-Encoding:') > -1:
+            encodings_list = itr.split(' ')
             break
+    for i in range(len(encodings_list)):
+        encodings_list[i] = encodings_list[i].removesuffix(',')
+    
+    if 'gzip' in encodings_list:
+        header_beginning = response.find('\n') + 1
+        response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
 
     # Debugging
     #print(f'Raw data:\n{data_str}\n\n')
