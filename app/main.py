@@ -30,8 +30,8 @@ def handle_response(connection):
     url = rqfields[0].split()[1]
     host = rqfields[1].split()[1]
     usr_agent_header = rqfields[2].split()
-    accept_content_header = rqfields[3].split()
-    accept_encoding_header = rqfields[4].split()
+    #accept_content_header = rqfields[3].split()
+    #accept_encoding_header = rqfields[4].split()
 
     # Respond to request
     response = f'HTTP/1.1 404 Not Found\r\n\r\n' # Default response
