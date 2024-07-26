@@ -2,7 +2,7 @@
 import socket
 import threading
 import argparse
-import os
+import gzip
 
 def handle_response(connection):    
     # Uncomment this to pass the first stage
@@ -35,7 +35,7 @@ def handle_response(connection):
 
     # Respond to request
     response = f'HTTP/1.1 404 Not Found\r\n\r\n' # Default response
-
+    body = ''
     if len(url_path) > 1 and url_path[1] == 'echo':
         body = url_path[-1]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
@@ -85,7 +85,11 @@ def handle_response(connection):
     
     if 'gzip' in encodings_list:
         header_beginning = response.find('\n') + 1
-        response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
+        compressed_body = gzip.compress(bytes(body, "utf-8"))
+        #content_length_index = response.find()
+        #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
+        response = f'{response[:header_beginning]}Content-Encoding:gzip\r\n\
+        Content-Type: text/plain\r\nContent-Length: {len(compressed_body)}\r\n\r\n{compressed_body.hex()}'
 
     # Debugging
     #print(f'Raw data:\n{data_str}\n\n')
