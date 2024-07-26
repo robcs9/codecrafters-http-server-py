@@ -90,7 +90,7 @@ def handle_response(connection):
         #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
         response = f'{response[:header_beginning]}Content-Encoding:gzip\r\n\
         Content-Type: text/plain\r\nContent-Length: {len(compressed_body.hex())}\r\n\r\n{compressed_body.hex()}'
-
+        print(response)
     # Debugging
     #print(f'Raw data:\n{data_str}\n\n')
     #print(f'req_fields:\n{req_fields}\n\n')
