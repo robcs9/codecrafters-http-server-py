@@ -98,7 +98,7 @@ def handle_response(connection):
             + b'\r\n\r\n'
             + compressed_zbody
         )
-        #print(type(compressed_zbody))
+        print(response)
         connection.send(response)
 
     connection.send(str.encode(response))
