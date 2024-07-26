@@ -99,7 +99,7 @@ def handle_response(connection):
             + compressed_zbody
         )
         print(response)
-        connection.send(response)
+        return connection.send(response)
 
     connection.send(str.encode(response))
 
