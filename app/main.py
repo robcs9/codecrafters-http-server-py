@@ -36,7 +36,7 @@ def handle_response(connection):
 
     # Respond to request
     response = f'HTTP/1.1 404 Not Found\r\n\r\n' # Default response
-    body = ''
+    body = None
     if len(url_path) > 1 and url_path[1] == 'echo':
         body = url_path[-1]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
