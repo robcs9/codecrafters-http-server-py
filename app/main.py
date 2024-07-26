@@ -94,7 +94,7 @@ def handle_response(connection):
         #response = f'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: {len(compressed_zbody)}\r\n\r\n{compressed_zbody}'
         response = (
             b'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: '
-            + bytes(len(compressed_zbody), "utf-8")
+            + int.to_bytes(len(compressed_zbody))
             + b'\r\n\r\n'
             + compressed_zbody
         )
