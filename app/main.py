@@ -95,7 +95,7 @@ def handle_response(connection):
     # Debugging
     #print(f'Raw data:\n{data_str}\n\n')
     #print(f'req_fields:\n{req_fields}\n\n')
-    #print(f'rqfields:\n{rqfields}\n\n')
+    print(f'rqfields:\n{rqfields}\n\n')
     #print(f'accept_enconding:\n{accept_encoding_header}\n\n')
     #print(f'accept_enconding length (should be > 1):\n{len(accept_encoding_header)}\n\n')
     #print(f'accept_enconding header (should be == \'gzip\'):\n{accept_encoding_header}\n\n')
