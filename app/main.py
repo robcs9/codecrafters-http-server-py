@@ -89,7 +89,7 @@ def handle_response(connection):
         #content_length_index = response.find()
         #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
         response = f'{response[:header_beginning]}Content-Encoding:gzip\r\n\
-        Content-Type: text/plain\r\nContent-Length: {len(compressed_body)}\r\n\r\n{compressed_body}'
+        Content-Type: text/plain\r\nContent-Length: {len(compressed_body.hex())}\r\n\r\n{compressed_body.hex()}'
 
     # Debugging
     #print(f'Raw data:\n{data_str}\n\n')
