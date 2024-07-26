@@ -91,15 +91,15 @@ def handle_response(connection):
         compressed_zbody = zlib.compress(str.encode(body))
         #content_length_index = response.find()
         #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
-        #response = f'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: {len(compressed_zbody)}\r\n\r\n{compressed_zbody}'
-        response = (
-            b'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: '
-            + int.to_bytes(len(compressed_zbody))
-            + b'\r\n\r\n'
-            + compressed_zbody
-        )
-        print(response)
-        return connection.send(response)
+        response = f'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: {len(compressed_body)}\r\n\r\n{compressed_body}'
+        #response = (
+        #    b'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: '
+        #    + len(compressed_zbody)
+        #    + b'\r\n\r\n'
+        #    + compressed_zbody
+        #)
+        #print(response)
+        #return connection.send(response)
 
     connection.send(str.encode(response))
 
