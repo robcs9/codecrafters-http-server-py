@@ -3,6 +3,7 @@ import socket
 import threading
 import argparse
 import gzip
+import zlib
 
 def handle_response(connection):    
     # Uncomment this to pass the first stage
@@ -87,18 +88,12 @@ def handle_response(connection):
         header_beginning = response.find('\n') + 1
         print(body)
         compressed_body = gzip.compress(bytes(body, "utf-8"))
+        compressed_zbody = zlib.compress(str.encode(body))
         #content_length_index = response.find()
         #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
         response = f'{response[:header_beginning]}Content-Encoding:gzip\r\n\
-        Content-Type: text/plain\r\nContent-Length: {len(compressed_body)}\r\n\r\n{compressed_body}'
+        Content-Type: text/plain\r\nContent-Length: {len(compressed_zbody)}\r\n\r\n{compressed_zbody}'
         #print(response)
-    # Debugging
-    #print(f'Raw data:\n{data_str}\n\n')
-    #print(f'req_fields:\n{req_fields}\n\n')
-    print(f'rqfields:\n{rqfields}\n\n')
-    #print(f'accept_enconding:\n{accept_encoding_header}\n\n')
-    #print(f'accept_enconding length (should be > 1):\n{len(accept_encoding_header)}\n\n')
-    #print(f'accept_enconding header (should be == \'gzip\'):\n{accept_encoding_header}\n\n')
 
     connection.send(str.encode(response))
 
