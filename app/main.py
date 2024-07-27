@@ -36,7 +36,7 @@ def handle_response(connection):
 
     # Respond to request
     response = f'HTTP/1.1 404 Not Found\r\n\r\n' # Default response
-    body = None
+    body = ''
     if len(url_path) > 1 and url_path[1] == 'echo':
         body = url_path[-1]
         response = f'HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: {len(body)}\r\n\r\n{body}'
@@ -88,8 +88,6 @@ def handle_response(connection):
         header_beginning = response.find('\n') + 1
         compressed_body = gzip.compress(bytes(body, "utf-8"))
         #print(compressed_zbody.decode())
-        test_none = None
-        print('test: ', test_none)
         #content_length_index = response.find()
         #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
         response = f'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: {len(compressed_body)}\r\n\r\n{compressed_body}'
@@ -100,7 +98,7 @@ def handle_response(connection):
         #    + compressed_zbody
         #)
         #print(response)
-        #return connection.send(response)
+        return connection.send(str.encode(response))
 
     connection.send(str.encode(response))
 
