@@ -86,9 +86,10 @@ def handle_response(connection):
     
     if 'gzip' in encodings_list:
         header_beginning = response.find('\n') + 1
-        print(body)
         compressed_body = gzip.compress(bytes(body, "utf-8"))
         compressed_zbody = zlib.compress(bytes(body, "utf-8"))
+        print(compressed_zbody)
+        print(compressed_body)
         #content_length_index = response.find()
         #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
         response = f'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: {len(compressed_zbody)}\r\n\r\n{compressed_zbody}'
