@@ -88,7 +88,7 @@ def handle_response(connection):
         header_beginning = response.find('\n') + 1
         compressed_body = gzip.compress(bytes(body, "utf-8"))
         compressed_zbody = zlib.compress(bytes(body, "utf-8"))
-        print(compressed_zbody.decode())
+        #print(compressed_zbody.decode())
         print(compressed_body.decode())
         #content_length_index = response.find()
         #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
