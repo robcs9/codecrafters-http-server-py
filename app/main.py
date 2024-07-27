@@ -98,7 +98,7 @@ def handle_response(connection):
         #    + compressed_zbody
         #)
         #print(response)
-        return connection.send(str.encode(response))
+        return connection.send(response)
 
     connection.send(str.encode(response))
 
