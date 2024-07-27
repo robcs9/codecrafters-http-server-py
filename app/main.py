@@ -88,11 +88,11 @@ def handle_response(connection):
         header_beginning = response.find('\n') + 1
         compressed_body = gzip.compress(bytes(body, "utf-8"))
         compressed_zbody = zlib.compress(bytes(body, "utf-8"))
-        print(compressed_zbody)
-        print(compressed_body)
+        print(compressed_zbody.decode())
+        print(compressed_body.decode())
         #content_length_index = response.find()
         #response = f'{response[:header_beginning]}Content-Encoding: gzip\r\n{response[header_beginning:]}'
-        response = f'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: {len(compressed_zbody)}\r\n\r\n{compressed_zbody}'
+        response = f'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: {len(compressed_zbody)}\r\n\r\n{compressed_zbody.decode()}'
         #response = (
         #    b'HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: '
         #    + len(compressed_zbody)
